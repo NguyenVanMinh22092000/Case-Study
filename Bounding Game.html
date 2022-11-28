@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bounding Game</title>
+</head>
+<body>
+<canvas id="myCanvas" width="600 px" height="600 px" style="border : 3px solid #54B435 ; display: block; margin: 70px 200px 70px 400px" f></canvas>
+<script>
+    let canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext("2d");
+    const BALL_RADIUS = 10;
+    let x = canvas.width / 2;
+    let y = canvas.height - 30;
+    let dx = 2;
+    let dy = -2;
+    const paddleHeight = 10;
+    const paddleWidth = 50;
+    let paddleX= (canvas.width - paddleWidth) / 2;
+    let leftButton = false;
+    let rightButton = false;
+    const interval =     setInterval(draw, 10);
+    // biến để thềm các tác nhân phụ
+    const brickWidth = 75;
+    const brickHeight = 20;
+    const brickX = 90;
+    const brickY = 150;
+    const brickOffsetLeft = 30;
+
+    // Bước đầu tiên để vẽ một quả bóng
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(x, y, BALL_RADIUS, 0, 2*Math.PI);
+            ctx.fillStyle = "#F0FF42";
+            ctx.fill();
+            ctx.closePath();
+        }
+    // Dy chuyển quả bóng
+        function draw(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBall();
+            drawPaddle();
+            drawBricks();
+            drawCircle()
+            x += dx;
+            y += dy;
+            conditions();
+        }
+    // HÀM ĐỂ CHO QUẢ BÓNG DỘI LẠI
+        function conditions(){
+            if(y + dy < BALL_RADIUS ){
+                dy = - dy;
+            } else if(y + dy + BALL_RADIUS > canvas.height){ if (x > paddleX && x < paddleX + paddleWidth) {
+                dy = -dy;
+            } else {
+                alert("GAME OVER");
+                document.location.reload();
+                clearInterval(interval);
+            }
+            }
+            if(x + dx - BALL_RADIUS < 0 || x + dx + BALL_RADIUS > canvas.width){
+                dx = - dx;
+            }
+            // Hàm để cho mái chèo của bạn không vượt ra ngoài canvas và để thao tác với bàn phím
+            if (rightButton) {
+                paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
+            } else if (leftButton) {
+                paddleX = Math.max(paddleX - 7, 0);
+            }
+            // phản lực cho vật cản
+            if(x + dx - BALL_RADIUS  < brickX + brickWidth && y + dy + BALL_RADIUS < brickY + brickHeight ){
+                dx = -dx;
+                dy = -dx;
+            }
+            if(x + dx + BALL_RADIUS  < brickX + brickWidth && y + dy + BALL_RADIUS < brickY - brickHeight ){
+                dx = -dx;
+                dy = -dx;
+            }
+        }
+    // Vẽ mái chèo để thao tác với quả bóng
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#379237";
+            ctx.fill();
+            ctx.closePath();
+        }
+    // Bắt sự kiện bàn phím
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+        function keyDownHandler(e){
+            if(e.key === 'Right' || e.key === "ArrowRight"){
+                rightButton = true;
+            }
+            else if (e.key === 'Left' || e.key === 'ArrowLeft'){
+                leftButton = true;
+            }
+        }
+        function keyUpHandler(e){
+            if(e.key === 'Right' || e.key === "ArrowRight"){
+                rightButton = false;
+            }
+            else if (e.key === 'Left' || e.key === 'ArrowLeft'){
+                leftButton = false;
+            }
+        }
+    //Vẽ vật chắn cho game
+        function drawBricks(){
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = "#82CD47";
+            ctx.fill();
+            ctx.closePath();
+        }
+        function drawCircle(){
+            let r = Math.random()* 30;
+            let b = Math.random()* 500;
+            let c = Math.random()* 500;
+            let colorCircle = "#" + Math.floor(Math.random()*5000);
+
+            console.log(colorCircle)
+            ctx.beginPath();
+            ctx.arc(c, b, r, 0, 2*Math.PI);
+            ctx.fillStyle = colorCircle;
+            ctx.fill();
+            ctx.closePath();}
+
+
+    // sự kiện chuột cho game
+    document.addEventListener("mousemove", mouseMoveHandler, false);
+    function mouseMoveHandler(e) {
+        const relativeX = e.clientX - canvas.offsetLeft;
+        if (relativeX > 0 && relativeX < canvas.width) {
+            paddleX = relativeX - paddleWidth / 2;
+        }
+    }
+</script>
+</body>
+</html>

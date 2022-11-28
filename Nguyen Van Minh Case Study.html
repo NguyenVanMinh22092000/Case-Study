@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nguyen Van Minh Case Study</title>
+</head>
+<body>
+  <canvas id="myCanvas" height="600px" width="600px" style="border: #EA047E solid 5px; margin: 80px 300px 80px 500px ; background-color: #FCE700 " ></canvas>
+  <script>
+    const CANVAS = document.querySelector('canvas');
+    const ctx = CANVAS.getContext('2d');
+    const BOARD_WIDTH = canvas.width,
+          BOARD_HEIGHT = canvas.height,
+          BALL_RADIUS = 30,
+          BALL_RADIAN = 30,
+          DRAW_GAME_SPEED = 20;
+    let ballX = 50,
+        ballY = 50,
+        dX= 2,
+        dY = -2,
+        score = 0;
+    let rightPress = false,
+        leftPress = false;
+    const PADDLE_WIDTH = 50,
+          PADDLE_HEIGHT = 30;
+    let paddleX = (canvas.width - PADDLE_WIDTH) / 2,
+        paddleY = (canvas.height - PADDLE_HEIGHT);
+    let Ball = function() {
+        this.x = x;
+        this.y = y;
+        this.ballRadian = BALL_RADIAN;
+        this.ballSpeed = DRAW_GAME_SPEED;
+
+        this.move = function(){
+            x += dx;
+            y += dy;
+        }
+        this.changeDirection = function(){
+            if( x + dx > canvas.width - BALL_RADIUS || x + dx < BALL_RADIUS){
+            dx = -dx;
+            }
+            if(y + dy > canvas.height - BALL_RADIUS ){
+                dy = -dy;
+            } else if(y + dy > canvas.height - BALL_RADIUS){
+                if(x > paddleX && x < paddleX + PADDLE_WIDTH){
+                    if( y = y - PADDLE_HEIGHT){
+                        dy -= dy;
+                    }
+                } else{
+                    alert('Game Over');
+                    document.location.reload();
+                    clearInterval();
+                }
+
+            };
+
+        };
+        this.drawBall = function(){
+            ctx.beginPath();
+            ctx.arc(x, y, BALL_RADIUS, 0, Math.PI*2);
+            ctx.fillStyle = '#00F5FF';
+            ctx.fill();
+            ctx.closePath();
+        }
+    };
+
+    let Paddle = function(){
+        this.width = PADDLE_WIDTH;
+        this.height = PADDLE_HEIGHT;
+        this.paddleX = paddleX;
+        this.paddleY = paddleY;
+
+        this.move = function(){
+            if(rightPress && paddleX < canvas.weight - PADDLE_WIDTH){
+                paddleX += 7;
+            } else if (leftPress && paddleX > canvas.weight - PADDLE_WIDTH){
+                paddleX -= 7;
+            }
+        }
+        this.drawPaddle = function(){
+            ctx.beginPath();
+            ctx.rect(this.paddleX, this.paddleY, this.width, this.height);
+            ctx.fillStyle = '#FF6D28';
+            ctx.fill();
+            ctx.closePath();
+        };
+    };
+
+    let GameBoard = function(){
+        this.width = BOARD_WIDTH;
+        this.height = BOARD_HEIGHT;
+
+        this.drawGameBoard = function(){
+            this
+        }
+    }
+
+  </script>
+</body>
+</html>

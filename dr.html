@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="game"></div>
+<script>
+    // Write your code here
+    // let grades = [ 45, 35, 34, 31, 32, 29, 67, 89, 100, 73, 67, 38, 33]
+    // for( let j = 0; j < grades.length; j++) {
+    //     let gradesFinal = 0;
+    //     if( grades[j] <= 38){
+    //         return grades[j];
+    //     } else{
+    //         let gradesIf = grades[j] % 5;
+    //         if(gradesIf >= 3){
+    //             return grades[j];
+    //         } else if ( gradesIf < 3){
+    //             return grades + 5 - gradesIf
+    //         }
+    //     }
+    // }
+
+    function gradingStudents(grades) {
+        let result =0;
+        for( let j = 0; j < grades.length; j++) {
+            if( grades[j] < 38){
+                result = grades[j];
+                //   console.log(grades[j])
+            } else{
+                let gradesIf = grades[j] % 5;
+                if(gradesIf >= 3){
+                    result = grades[j];
+                    // console.log(grades[j])
+                } else {
+                    result= (grades[j] + (5 - gradesIf));
+                    //    console.log( grades[j] + (5 - gradesIf));
+
+                }
+            }
+        }
+        return result;
+    }
+
+</script>
+
+</body>
+</html>
